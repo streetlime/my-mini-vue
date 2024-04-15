@@ -1,4 +1,4 @@
-import { readonly } from "../reactive"
+import { isReadonly, readonly } from "../reactive"
 
 describe("readonly", () => {
     it("happy path", () => {
@@ -10,13 +10,18 @@ describe("readonly", () => {
     )
     it("warn then call set", () => {
         // mock
-
         console.warn = jest.fn()
+        const userCopy = {
+            age: 10
+        }
         const user = readonly({
             age: 10
         })
         user.age = 11
         expect(console.warn).toHaveBeenCalled()
+        // isReadonly
+        expect(isReadonly(user)).toBe(true)
+        expect(isReadonly(userCopy)).toBe(false)
     }
     )
 })
